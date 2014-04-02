@@ -1,7 +1,7 @@
 Webutil - utilities for Go web apps
 --------
 
-## License - three clause BSD
+### License - three clause BSD
 Copyright (c) 2014 awawfumin. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
