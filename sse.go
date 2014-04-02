@@ -46,7 +46,7 @@ func NewServerSideEventWriter(w http.ResponseWriter, heartbeat string, d time.Du
 	headers.Set("Connection", "keep-alive")
 
 	ticker := time.NewTicker(d)
-  sse := Sse{w: w, stopTicker: make(chan bool, 1), ConnClosed: make(chan bool, 1)}
+	sse := Sse{w: w, stopTicker: make(chan bool, 1), ConnClosed: make(chan bool, 1)}
 	go func() {
 		defer ticker.Stop()
 		for {
@@ -54,10 +54,10 @@ func NewServerSideEventWriter(w http.ResponseWriter, heartbeat string, d time.Du
 			case <-ticker.C:
 				err := sse.EventWrite(heartbeat, make([]byte, 0))
 				if err != nil {
-          select {
-          case sse.ConnClosed <- true:
-          default:
-          }
+					select {
+					case sse.ConnClosed <- true:
+					default:
+					}
 					return
 				}
 			case <-sse.stopTicker:
@@ -69,10 +69,10 @@ func NewServerSideEventWriter(w http.ResponseWriter, heartbeat string, d time.Du
 }
 
 func (sse Sse) Close() {
-  select {
-  case sse.stopTicker <- true:
-  default:
-  }
+	select {
+	case sse.stopTicker <- true:
+	default:
+	}
 }
 
 func (sse Sse) Write(b []byte) error {
