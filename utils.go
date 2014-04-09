@@ -2,6 +2,7 @@ package webutil
 
 import (
 	"math/rand"
+  "net/http"
 	"time"
 )
 
@@ -29,4 +30,14 @@ func RandByteSliceWithSize(size int) []byte {
 // this function has a collision probability of 10^-12 in 2.6*10^13 elements.
 func RandByteSlice() []byte {
 	return RandByteSliceWithSize(8)
+}
+
+// expiresHeader adds an "Expires" in the http response.
+// For example, we can use it to set an Expires of 360 days for static content:
+// http.Handle("/static/", expiresHeader(360*24*time.Hour, http.StripPrefix("/static/", http.FileServer(http.Dir("prod/static")))))
+func expiresHeader(d time.Duration, h http.Handler) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    w.Header().Add("Expires", time.Now().Add(d).Format(time.RFC1123))
+    h.ServeHTTP(w, r)
+  })
 }
