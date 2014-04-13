@@ -16,9 +16,9 @@ type ParamParser struct {
 	Err error
 }
 
-const errInt int = math.MinInt32
+const errInt int = math.MinInt64
 
-func (parser *ParamParser) RequiredIntParam(key string) int {
+func (parser *ParamParser) RequiredIntParam(key string) int64 {
 	if parser.Err != nil {
 		return errInt
 	}
@@ -29,7 +29,7 @@ func (parser *ParamParser) RequiredIntParam(key string) int {
 		parser.Err = errors.New(errMsg)
 		return errInt
 	}
-	i, err := strconv.Atoi(v)
+	i, err := strconv.ParseInt(v, 10, 64)
 	if err != nil {
 		errMsg := fmt.Sprintf("Wrong integer format: %v", v)
 		http.Error(parser.W, errMsg, http.StatusBadRequest)
@@ -39,7 +39,7 @@ func (parser *ParamParser) RequiredIntParam(key string) int {
 	return i
 }
 
-func (parser *ParamParser) OptionalIntParam(key string, defaultVal int) int {
+func (parser *ParamParser) OptionalIntParam(key string, defaultVal int64) int64 {
 	if parser.Err != nil {
 		return errInt
 	}
@@ -47,7 +47,7 @@ func (parser *ParamParser) OptionalIntParam(key string, defaultVal int) int {
 	if v == "" {
 		return defaultVal
 	}
-	i, err := strconv.Atoi(v)
+	i, err := strconv.ParseInt(v, 10, 64)
 	if err != nil {
 		errMsg := fmt.Sprintf("Wrong integer format: %v", v)
 		http.Error(parser.W, errMsg, http.StatusBadRequest)
