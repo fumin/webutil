@@ -16,7 +16,7 @@ type ParamParser struct {
 	Err error
 }
 
-const errInt int = math.MinInt64
+const errInt int64 = math.MinInt64
 
 func (parser *ParamParser) RequiredIntParam(key string) int64 {
 	if parser.Err != nil {
