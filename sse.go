@@ -19,7 +19,7 @@ func (w *ByteWriter) Write(b []byte) {
 
 // A Sse is a wrapper over a Server-Sent Events response.
 type Sse struct {
-	w          http.ResponseWriter
+	w http.ResponseWriter
 }
 
 func NewServerSideEventsWriter(w http.ResponseWriter) Sse {
@@ -27,7 +27,7 @@ func NewServerSideEventsWriter(w http.ResponseWriter) Sse {
 	headers.Set("Content-Type", "text/event-stream")
 	headers.Set("Cache-Control", "no-cache")
 	headers.Set("Connection", "keep-alive")
-  return Sse{w: w}
+	return Sse{w: w}
 }
 
 func (sse Sse) Write(b []byte) error {
